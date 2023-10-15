@@ -118,11 +118,11 @@
                 xwayland = {
                   enable = true;
                 };
-                package = inputs.hyprland-flake.packages.default;
+                package = inputs.self.packages.default;
               };
 
             };
-          };  
+          } inputs;  
       };
     };
 }

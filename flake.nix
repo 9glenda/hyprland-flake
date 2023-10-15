@@ -119,7 +119,7 @@
                 xwayland = {
                   enable = true;
                 };
-                package = inputs.self.packages.default;
+                package = inputs.self.packages.x86_64-linux.default;
               };
 
             };

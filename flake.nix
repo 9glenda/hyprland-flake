@@ -81,7 +81,7 @@
     }) // {
 
       nixosModules = {
-        default = { pkgs, lib, config, ... }:
+        default = inputs@{ pkgs, lib, config, ... }:
           let
           in {
             imports = [
@@ -118,7 +118,7 @@
                 xwayland = {
                   enable = true;
                 };
-                package = self.packages.default;
+                package = inputs.self.packages.default;
               };
 
             };

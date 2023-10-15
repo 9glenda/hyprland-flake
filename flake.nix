@@ -1,14 +1,10 @@
 {
-  description = "9glenda's simple Neovim flake for easy configuration";
+  description = "9glenda's simple Hyprland flake for easy configuration";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
     flake-utils = {
       url = "github:numtide/flake-utils";
-    };
-    neovim-flake = {
-      url = "github:neovim/neovim?dir=contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland = {
       url = "github:hyprwm/Hyprland";
@@ -68,5 +64,63 @@
           };
           default = packages.hyprlandGlenda;
         };
+      nixosModules = {
+        default = { pkgs, lib, config, ... }:
+          let
+          in {
+            imports = [
+              hyprland.nixosModules.default
+            ];
+            config = {
+              security.pam.services.swaylock = {
+                text = ''
+                  auth include login
+                '';
+              };
+
+              xdg.portal = {
+                extraPortals = with pkgs; [   
+                  #xdg-desktop-portal-hyprland
+                ];
+                xdgOpenUsePortal = true;
+                wlr = {
+                  enable = true;
+                  settings = {
+                    screencast = {
+                      output_name = "HDMI-A-1";
+                      max_fps = 60;
+                      exec_before = "disable_notifications.sh";
+                      exec_after = "enable_notifications.sh";
+                      chooser_type = "simple";
+                      chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
+                    };
+                  };
+                };
+              };
+              programs.hyprland = {
+                enable = true;
+                xwayland = {
+                  enable = true;
+                };
+                package = self.packages.default;
+              };
+
+            };
+          };  
+      };
+      # nixosConfigurations.test = {
+      #   imports = [
+      #     self.nixosModules.default
+      #   ];
+      #   config = {
+      #      boot.loader.grub.enable = true;
+ # boot.loader.grub.devices = [ "nodev" ];
+ # boot.loader.grub.efiInstallAsRemovable = true;
+ # boot.loader.grub.efiSupport = true;
+ # boot.loader.grub.useOSProber = true;
+
+      #   };
+      # };
+
       });
 }

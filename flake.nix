@@ -118,7 +118,7 @@
                 xwayland = {
                   enable = true;
                 };
-                package = inputs.self.packages.default;
+                package = inputs.hyprland-flake.packages.default;
               };
 
             };

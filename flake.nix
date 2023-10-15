@@ -80,8 +80,9 @@
 
     }) // {
 
-      nixosModules = {
-        default = inputs: { pkgs, lib, config, ... }:
+      nixosModules = 
+      let 
+        hyprland-flake = inputs: { pkgs, lib, config, ... }:
           let
           in {
             imports = [
@@ -122,7 +123,9 @@
               };
 
             };
-          } inputs;  
+          };
+      in {
+        default = hyprland-flake inputs;
       };
     };
 }
